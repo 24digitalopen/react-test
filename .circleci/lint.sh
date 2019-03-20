@@ -1,4 +1,4 @@
-for file in $(git diff --name-only --cached | egrep '.js$');
+for file in $(git show --name-only | egrep '[.]js$');
 do
     echo $file
 	eslint $file --max-warnings 0
