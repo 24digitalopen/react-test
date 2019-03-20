@@ -40,6 +40,7 @@ jobs:
           command: |
             yarn add prettier && \
             JSFILES=$(git diff --cached --name-only --diff-filter=ACM "*.js" "*.jsx" | sed 's| |\\ |g') && \
-            echo $JSFILES | xargs ./node_modules/.bin/prettier --write
+            [ -z "$JSFILES" ] && echo "$JSFILES" | xargs ./node_modules/.bin/prettier --write \
+            && echo "$JSFILES" | xargs git add
 
       - run: yarn test
