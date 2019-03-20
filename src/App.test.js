@@ -9,5 +9,5 @@ it("renders without crashing", () => {
 });
 
 test("falsey mcfalseface", () => {
-  expect(false).toBe(false);
+  expect(false).toBe(true);
 });
