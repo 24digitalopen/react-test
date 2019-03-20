@@ -5,7 +5,6 @@ if [[ ! -f ./node_modules/.bin/prettier ]]; then
 fi
 
 JSFILES=$(git diff --cached --name-only --diff-filter=ACM "*.js" "*.jsx" | sed 's| |\\ |g')
-[ -z "$JSFILES" ] && exit 0
-
+echo "$JSFILES"
 echo "$JSFILES" | xargs ./node_modules/.bin/prettier --write
 echo "$JSFILES" | xargs git add
