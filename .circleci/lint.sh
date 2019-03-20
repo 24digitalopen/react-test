@@ -1,4 +1,4 @@
-for file in $(git show --name-only | egrep '[.]js$');
+for file in $(find ./src -name *.js[x]);
 do
     echo $file
 	node ./node_modules/eslint/bin/eslint.js $file --max-warnings 0
