@@ -1,0 +1,53 @@
+#!/bin/sh
+exit 0 # short-circuit temporarily
+
+# find node
+PATH=$PATH:/usr/local/bin
+
+yarn test
+if [[ "$?" == 0 ]]; then
+    echo "\t\033[32mJest Tests Passed\033[0m"
+else
+    echo "\t\033[41mJest Tests Failed\033[0m"
+    exit 1
+fi
+
+NODE=$(which node)
+
+# if it cannot find a node installation
+if [[ -z $NODE ]]; then
+	#NodeJS is not installed
+	echo "Please install NodeJS first!"
+	exit 1
+fi
+
+# make sure eslint is installed
+if [[ ! -d ./node_modules/eslint ]]; then
+	npm install eslint
+	npm install --save-dev eslint-config-react-app babel-eslint@9.x eslint@5.x eslint-plugin-flowtype@2.x eslint-plugin-import@2.x eslint-plugin-jsx-a11y@6.x eslint-plugin-react@7.x
+fi
+
+if [[ ! -f ./node_modules/.bin/prettier ]]; then
+	npm install prettier
+fi
+
+JSFILES=$(git diff --cached --name-only --diff-filter=ACM "*.js" "*.jsx" | sed 's| |\\ |g')
+[ -z "$JSFILES" ] && exit 0
+
+echo "$JSFILES" | xargs ./node_modules/.bin/prettier --write
+echo "$JSFILES" | xargs git add
+
+# run eslint before every commit, don't commit until
+# eslint is OK
+for file in $(git diff --name-only --cached | egrep '.js$');
+do
+	$NODE ./node_modules/eslint/bin/eslint.js $file --max-warnings 0
+	# If the result of the previous command is NOT zero
+	if [ $? -ne 0 ]; then
+	 echo "*** ERROR *** : eslint failed for file: $file, please fix code and recommit"
+	 exit 1
+	fi
+done
+
+# Everything is ok
+exit 0
