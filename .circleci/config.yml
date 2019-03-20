@@ -36,7 +36,7 @@ jobs:
       # run tests!
 
       - run:
-          name: "Prettify modified JS"
-          command: bash ./.circleci/prettier.sh
+          name: "Lint modified JS"
+          command: bash ./.circleci/lint.sh
 
       - run: yarn test
