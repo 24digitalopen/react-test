@@ -14,5 +14,5 @@ test("falsey mcfalseface", () => {
 });
 
 test("let's get 100% code coverage!", () => {
-  expect(true).toBe(true);
+  expect(true).toBe(false);
 });
