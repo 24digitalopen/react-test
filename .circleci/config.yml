@@ -34,4 +34,11 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
+
+      - run:
+          name: "Prettify modified JS"
+          command: |
+            $(git diff --cached --name-only --diff-filter=ACM "*.js" "*.jsx" | sed 's| |\\ |g') |
+            xargs ./node_modules/.bin/prettier --write
+
       - run: yarn test
