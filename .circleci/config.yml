@@ -37,10 +37,6 @@ jobs:
 
       - run:
           name: "Prettify modified JS"
-          command: |
-            npm install prettier && \
-            JSFILES=$(git diff --cached --name-only --diff-filter=ACM "*.js" "*.jsx" | sed 's| |\\ |g') && \
-            [ -z "$JSFILES" ] && echo "$JSFILES" | xargs ./node_modules/.bin/prettier --write \
-            && echo "$JSFILES" | xargs git add
+          command: echo $(git diff --cached --name-only --diff-filter=ACM "*.js" "*.jsx" | sed 's| |\\ |g')
 
       - run: yarn test
