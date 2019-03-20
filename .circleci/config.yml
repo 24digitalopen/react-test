@@ -37,6 +37,6 @@ jobs:
 
       - run:
           name: "Prettify modified JS"
-          command: echo $(git diff --cached --name-only --diff-filter=ACM "*.js" "*.jsx" | sed 's| |\\ |g')
+          command: git diff --cached --name-only --diff-filter=ACM "*.js" "*.jsx" | sed 's| |\\ |g'
 
       - run: yarn test
